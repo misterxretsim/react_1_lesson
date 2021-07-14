@@ -1,0 +1,33 @@
+p {
+    margin: 0;
+}
+
+.Message {
+    margin-bottom: 10px;
+    border-radius: 7px;
+    width: 500px;
+    text-align: justify;
+    padding: 10px;
+}
+
+.Message__robot {
+    background-color: #ffffff;
+    color: #484848;
+}
+
+.Message__client {
+    margin-left: 180px;
+    background-color: #4180ff;
+    color: #fff;
+}
+
+.Message__text {
+    display: block;
+    font-size: 26px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.Message__author, .Message__time {
+    font-size: 14px;
+}
