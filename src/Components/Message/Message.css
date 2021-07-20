@@ -1,33 +1,13 @@
-p {
-    margin: 0;
-}
-
 .Message {
-    margin-bottom: 10px;
-    border-radius: 7px;
-    width: 500px;
-    text-align: justify;
-    padding: 10px;
+    max-height: calc(100vh - 70px);
+    overflow-y: scroll;
+    border-radius: 4px;
 }
 
-.Message__robot {
-    background-color: #ffffff;
-    color: #484848;
+.Message__me {
+    text-align: right !important;
 }
 
-.Message__client {
-    margin-left: 180px;
-    background-color: #4180ff;
-    color: #fff;
-}
-
-.Message__text {
-    display: block;
-    font-size: 26px;
-    margin-top: 5px;
-    margin-bottom: 5px;
-}
-
-.Message__author, .Message__time {
-    font-size: 14px;
+.Avatar__me {
+    margin-left: 16px;
 }
