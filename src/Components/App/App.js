@@ -75,7 +75,11 @@ function App() {
             <Chat />
             <div className="App__content">
                 <Message messageList={messageList} />
-                <Paper component="form" className="App__form">
+                <Paper
+                    component="form"
+                    className="App__form"
+                    onSubmit={(e) => e.preventDefault()}
+                >
                     <InputBase
                         id="input"
                         className="App__input"
