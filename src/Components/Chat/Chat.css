@@ -1,6 +1,48 @@
 .Chat {
+    text-align: center;
+    background-color: #282c34;
+    justify-content: center;
+    display: flex;
+    min-height: 100vh;
+}
+
+.Chat__content {
+    display: flex;
+    flex-direction: column;
+    width: 700px;
+    padding: 5px 10px;
+}
+
+.Chat__form {
     position: absolute;
-    top: 5px;
-    right: calc(50vw + 355px);
-    width: 200px;
+    bottom: 10px;
+    width: 700px;
+}
+
+.Chat__input {
+    width: calc(100% - 73px);
+    border: none;
+    outline: none;
+    background-color: transparent;
+    font-size: 26px;
+    padding: 5px 20px;
+    border: 0;
+}
+
+.Chat__btn {
+    margin-left: auto !important;
+    margin-right: 15px !important;
+    color: #2196f3 !important;
+}
+.MuiIconButton-root.Mui-disabled {
+    color: rgba(0, 0, 0, 0.26) !important;
+}
+
+.Content__text {
+    position: absolute;
+    top: 40%;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    margin: 0 -50% 0 0;
+    color: #fff;
 }
