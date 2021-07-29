@@ -1,8 +1,7 @@
 import './Loader.css'
-import React from 'react'
 import CircularProgress from '@material-ui/core/CircularProgress'
 
-function Loader() {
+export default function Loader() {
     return (
         <div className="Loader">
             <CircularProgress
@@ -14,5 +13,3 @@ function Loader() {
         </div>
     )
 }
-
-export default Loader

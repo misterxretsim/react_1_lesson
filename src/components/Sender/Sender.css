@@ -1,25 +1,10 @@
-.App {
-    text-align: center;
-    background-color: #282c34;
-    justify-content: center;
-    display: flex;
-    min-height: 100vh;
-}
-
-.App__content {
-    display: flex;
-    flex-direction: column;
-    width: 700px;
-    padding: 5px 10px;
-}
-
-.App__form {
+.Sender {
     position: absolute;
     bottom: 10px;
     width: 700px;
 }
 
-.App__input {
+.Sender__input {
     width: calc(100% - 73px);
     border: none;
     outline: none;
@@ -29,7 +14,7 @@
     border: 0;
 }
 
-.App__btn {
+.Sender__btn {
     margin-left: auto !important;
     margin-right: 15px !important;
     color: #2196f3 !important;

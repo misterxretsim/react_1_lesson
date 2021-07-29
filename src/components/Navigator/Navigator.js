@@ -1,0 +1,73 @@
+import './Navigator.css'
+import { Link, useLocation } from 'react-router-dom'
+import {
+    Paper,
+    List,
+    ListItem,
+    ListItemText,
+    ListItemIcon,
+} from '@material-ui/core'
+import {
+    Home,
+    HomeOutlined,
+    Person,
+    PersonOutlineOutlined,
+    Sms,
+    SmsOutlined,
+} from '@material-ui/icons'
+
+export default function Navigator() {
+    const location = useLocation()
+
+    return (
+        <Paper className="Navigator" elevation={0}>
+            <List component="nav">
+                <ListItem
+                    button
+                    component={Link}
+                    to="/"
+                    selected={location.pathname === '/'}
+                >
+                    <ListItemIcon>
+                        {location.pathname === '/' ? (
+                            <Home className="Icon__colored" />
+                        ) : (
+                            <HomeOutlined />
+                        )}
+                    </ListItemIcon>
+                    <ListItemText primary="Главная" />
+                </ListItem>
+                <ListItem
+                    button
+                    component={Link}
+                    to="/profile"
+                    selected={location.pathname === '/profile'}
+                >
+                    <ListItemIcon>
+                        {location.pathname === '/profile' ? (
+                            <Person className="Icon__colored" />
+                        ) : (
+                            <PersonOutlineOutlined />
+                        )}
+                    </ListItemIcon>
+                    <ListItemText primary="Профиль" />
+                </ListItem>
+                <ListItem
+                    button
+                    component={Link}
+                    to="/chats"
+                    selected={location.pathname.includes('/chats')}
+                >
+                    <ListItemIcon>
+                        {location.pathname.includes('/chats') ? (
+                            <Sms className="Icon__colored" />
+                        ) : (
+                            <SmsOutlined />
+                        )}
+                    </ListItemIcon>
+                    <ListItemText primary="Чаты" />
+                </ListItem>
+            </List>
+        </Paper>
+    )
+}
