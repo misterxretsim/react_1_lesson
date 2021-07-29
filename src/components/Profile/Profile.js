@@ -14,27 +14,43 @@ import {
     FormControlLabel,
     Radio,
 } from '@material-ui/core'
+import { useDispatch, useSelector } from 'react-redux'
+import { changeProfileObject } from '../../actions/profile'
 import { Edit, Save } from '@material-ui/icons'
 
 export default function Profile() {
+    const { name, email, pass, gender, birthdate } = useSelector(
+        (state) => state.profile
+    )
+    const dispatch = useDispatch()
+    const [profile, setProfile] = useState({
+        name,
+        email,
+        pass,
+        gender,
+        birthdate,
+    })
     const [isEdit, setIsEdit] = useState(false)
-    const [disabled, setDisabled] = useState(true)
-    const [name, setName] = useState('Nikolay')
-    const [email, setEmail] = useState('kolya@mail.ru')
-    const [pass, setPass] = useState('qwerty123')
-    const [gender, setGender] = useState('male')
-    const [date, setDate] = useState('2017-05-24')
 
-    const handleName = (e) => setName(e.target.value)
-    const handleEmail = (e) => setEmail(e.target.value)
-    const handlePass = (e) => setPass(e.target.value)
-    const handleGender = (e) => setGender(e.target.value)
-    const handleDate = (e) => setDate(e.target.value)
+    const handleName = (e) => setProfileObj({ name: e.target.value })
+    const handleEmail = (e) => setProfileObj({ email: e.target.value })
+    const handlePass = (e) => setProfileObj({ pass: e.target.value })
+    const handleGender = (e) => setProfileObj({ gender: e.target.value })
+    const handleBirthdate = (e) => setProfileObj({ birthdate: e.target.value })
+
+    const setProfileObj = (obj) =>
+        setProfile({
+            name: obj.name ? obj.name : profile.name,
+            email: obj.email ? obj.email : profile.email,
+            pass: obj.pass ? obj.pass : profile.pass,
+            gender: obj.gender ? obj.gender : profile.gender,
+            birthdate: obj.birthdate ? obj.birthdate : profile.birthdate,
+        })
+
     const handleClick = () => {
+        if (isEdit) dispatch(changeProfileObject(profile))
         setIsEdit(!isEdit)
-        setDisabled(!disabled)
     }
-
     return (
         <Paper className="Profile" elevation={0} component="form">
             <Typography variant="h4" component="h1" className="Profile__header">
@@ -67,22 +83,22 @@ export default function Profile() {
                 <FormLabel component="legend" className="Profile__radioLabel">
                     Гендер
                 </FormLabel>
-                <RadioGroup value={gender} onChange={handleGender}>
+                <RadioGroup value={profile.gender} onChange={handleGender}>
                     <FormControlLabel
                         value="male"
-                        disabled={disabled}
+                        disabled={!isEdit}
                         control={<Radio className="Profile__radio" />}
                         label="Мужчина"
                     />
                     <FormControlLabel
                         value="female"
-                        disabled={disabled}
+                        disabled={!isEdit}
                         control={<Radio className="Profile__radio" />}
                         label="Женщина"
                     />
                     <FormControlLabel
                         value="other"
-                        disabled={disabled}
+                        disabled={!isEdit}
                         control={<Radio className="Profile__radio" />}
                         label="Другое"
                     />
@@ -96,11 +112,11 @@ export default function Profile() {
                 <InputLabel htmlFor="date-input">Дата рождения</InputLabel>
                 <OutlinedInput
                     id="date-input"
-                    disabled={disabled}
+                    disabled={!isEdit}
                     autoComplete="off"
-                    value={date}
+                    value={profile.birthdate}
                     type="date"
-                    onChange={handleDate}
+                    onChange={handleBirthdate}
                     startAdornment={
                         <InputAdornment position="start">🗓</InputAdornment>
                     }
@@ -115,9 +131,9 @@ export default function Profile() {
                 <InputLabel htmlFor="name-input">Имя</InputLabel>
                 <OutlinedInput
                     id="name-input"
-                    disabled={disabled}
+                    disabled={!isEdit}
                     autoComplete="off"
-                    value={name}
+                    value={profile.name}
                     onChange={handleName}
                     startAdornment={
                         <InputAdornment position="start">👤</InputAdornment>
@@ -133,9 +149,9 @@ export default function Profile() {
                 <InputLabel htmlFor="email-input">Email</InputLabel>
                 <OutlinedInput
                     id="email-input"
-                    disabled={disabled}
+                    disabled={!isEdit}
                     autoComplete="off"
-                    value={email}
+                    value={profile.email}
                     onChange={handleEmail}
                     startAdornment={
                         <InputAdornment position="start">＠</InputAdornment>
@@ -151,10 +167,10 @@ export default function Profile() {
                 <InputLabel htmlFor="pass-input">Пароль</InputLabel>
                 <OutlinedInput
                     id="pass-input"
-                    disabled={disabled}
+                    disabled={!isEdit}
                     type="password"
                     autoComplete="off"
-                    value={pass}
+                    value={profile.pass}
                     onChange={handlePass}
                     startAdornment={
                         <InputAdornment position="start">🔒</InputAdornment>

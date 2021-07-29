@@ -1,5 +1,5 @@
 import './ChatNav.css'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import AddChatBtn from '../AddChatBtn/AddChatBtn'
 import {
     Paper,
@@ -17,34 +17,43 @@ import {
     IconButton,
 } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
-import { getImg } from '../../helper'
-import { chats } from '../../data/data'
+import { getImg, chatPath, textForDelChat } from '../../helper'
 import { useLocation, useHistory } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { changeChatObject } from '../../actions/chat'
 
 export default function ChatNav() {
-    const [chatList, setChatList] = useState([])
-    const [openAlert, setOpenAlert] = useState(false)
-    const [curChatForDel, setCurChatForDel] = useState(null)
+    const [open, setOpen] = useState(false)
+    const [curChatIdForDel, setCurChatIdForDel] = useState(null)
+    const dispatch = useDispatch()
+    const chats = useSelector((state) => state.chats)
     const location = useLocation()
     const history = useHistory()
+
     const handleClick = (name) => history.push('/chats/' + name)
-    const handleSelect = (name) => name === location.pathname.split('/').pop()
-    const handleClose = () => setOpenAlert(false)
+    const handleSelect = (name) => name === chatPath(location)
+    const handleClose = () => {
+        setOpen(false)
+        setCurChatIdForDel(null)
+    }
     const handleDel = (id) => {
-        setOpenAlert(true)
-        setCurChatForDel(id)
+        setOpen(true)
+        setCurChatIdForDel(id)
     }
     const handleCloseWithDel = () => {
-        setOpenAlert(false)
-        setChatList(chatList.filter((chat) => chat.id !== curChatForDel))
+        setOpen(false)
+        if (curChatIdForDel) {
+            dispatch(
+                changeChatObject(chats.filter((el) => el.id !== curChatIdForDel))
+            )
+            history.push('/chats/' + chats[0].name)
+        }
     }
-
-    useEffect(() => setChatList(chats), [])
 
     return (
         <Paper className="ChatNav" elevation={0}>
             <List component="nav" className="ChatNav__nav">
-                {chatList.map((chat) => (
+                {chats.map((chat) => (
                     <ListItem
                         key={chat.id}
                         selected={handleSelect(chat.name)}
@@ -55,24 +64,27 @@ export default function ChatNav() {
                         </ListItemAvatar>
                         <ListItemText
                             primary={chat.name}
+                            className="ChatNav__itemText"
                             onClick={() => handleClick(chat.name)}
                         />
-                        <IconButton
-                            onClick={() => handleDel(chat.id)}
-                            color="secondary"
-                        >
-                            <DeleteIcon />
-                        </IconButton>
+                        {chat.name !== 'Robot' ? (
+                            <IconButton
+                                onClick={() => handleDel(chat.id)}
+                                color="secondary"
+                            >
+                                <DeleteIcon />
+                            </IconButton>
+                        ) : null}
                     </ListItem>
                 ))}
                 <AddChatBtn />
             </List>
 
-            <Dialog open={openAlert} onClose={handleClose}>
+            <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Подтвердите действие</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Вы, действительно, хотите удалить этот чат?
+                        {textForDelChat(chats, curChatIdForDel)}
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

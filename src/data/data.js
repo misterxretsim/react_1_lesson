@@ -1,7 +1,8 @@
-export const chats = [
+export const chatObject = [
     {
         id: 1,
         name: 'Robot',
+        email: 'a@a.a',
         messages: [
             {
                 id: 1,
@@ -32,6 +33,7 @@ export const chats = [
     {
         id: 2,
         name: 'Alexandr',
+        email: 'a@a.a',
         messages: [
             {
                 id: 1,
@@ -62,6 +64,7 @@ export const chats = [
     {
         id: 3,
         name: 'Sarah',
+        email: 'a@a.a',
         messages: [
             {
                 id: 1,
@@ -92,6 +95,7 @@ export const chats = [
     {
         id: 4,
         name: 'Vanya',
+        email: 'a@a.a',
         messages: [
             {
                 id: 1,
@@ -120,3 +124,11 @@ export const chats = [
         ]
     },
 ]
+export const profileObject = {
+    name: 'Nikolay',
+    email: 'kolya@mail.ru',
+    pass: 'qwerty123',
+    gender: 'male',
+    birthdate: '2017-05-24',
+}
+export const reg = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
