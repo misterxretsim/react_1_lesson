@@ -2,9 +2,23 @@ import man from './images/man.png'
 import robot from './images/robot.png'
 import woman from './images/woman.jpeg'
 import mustache from './images/mustache.jpeg'
+import { regExEmail, regExDB } from './data/data'
 
 export const chatPath = (arg) => arg.pathname.split('/chats/').pop()
 export const isRobotChat = (arg) => chatPath(arg) === 'Robot'
+export const validateEmail = (val) => !regExEmail.test(String(val).toLowerCase())
+export const validateBD = (val) => {
+    console.log(val)
+    console.log(!regExDB.test(String(val).toLowerCase()))
+    console.log(val.length)
+    console.log(!regExDB.test(String(val).toLowerCase()) && val.length === 10)
+    if (val.length === 10) {
+        return !regExDB.test(String(val).toLowerCase())
+    } else {
+        return true
+    }
+}
+export const isExist = (arg) => typeof arg === 'string'
 export const textForDelChat = (chats, id) => {
     const chat = chats.find((el) => el.id === id)
     if (!!chat)

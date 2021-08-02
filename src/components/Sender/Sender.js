@@ -7,9 +7,10 @@ import { changeChatObject } from '../../actions/chat'
 import { chatsMapper, isRobotChat } from '../../helper'
 import { IconButton, InputBase, Paper } from '@material-ui/core'
 import SendIcon from '@material-ui/icons/Send'
+import { chatSelector } from '../../selectors/chat'
 
 export default function Sender() {
-    const chats = useSelector((state) => state.chats)
+    const chats = useSelector(chatSelector)
     const [input, setInput] = React.useState('')
     const [robotTyping, setRobotTyping] = React.useState(false)
     const location = useLocation()
@@ -18,42 +19,44 @@ export default function Sender() {
     const handleInput = (e) => setInput(e.target.value)
     const handleSend = React.useCallback(
         (e) => {
-        if (
-            input &&
-            !robotTyping &&
-            (e.key === 'Enter' || e.key === undefined)
-        ) {
-            dispatch(
-                changeChatObject(chatsMapper(chats, location, input, 'Me'))
-            )
+            if (
+                input &&
+                !robotTyping &&
+                (e.key === 'Enter' || e.key === undefined)
+            ) {
+                dispatch(
+                    changeChatObject(chatsMapper(chats, location, input, 'Me'))
+                )
 
-            setInput('')
+                setInput('')
 
-            if (isRobotChat(location)) {
-                setRobotTyping(true)
-                const timer = setTimeout(() => {
-                    dispatch(
-                        changeChatObject(
-                            chatsMapper(
-                                chats,
-                                location,
-                                'Ожидайте ответа оператора',
-                                'Robot'
+                if (isRobotChat(location)) {
+                    setRobotTyping(true)
+                    const timer = setTimeout(() => {
+                        dispatch(
+                            changeChatObject(
+                                chatsMapper(
+                                    chats,
+                                    location,
+                                    'Ожидайте ответа оператора',
+                                    'Robot'
+                                )
                             )
                         )
-                    )
-                    setRobotTyping(false)
-                    ref.current.focus()
-                }, 3000)
+                        setRobotTyping(false)
+                        ref.current.focus()
+                    }, 3000)
 
-                return () => {
-                    clearTimeout(timer)
+                    return () => {
+                        clearTimeout(timer)
+                    }
                 }
             }
-        }
-    }, [chats, dispatch, input, location, robotTyping])
+        },
+        [chats, dispatch, input, location, robotTyping]
+    )
 
-    React.useEffect(() => ref.current.focus())
+    React.useEffect(() => ref.current.focus(), [])
 
     return (
         <>

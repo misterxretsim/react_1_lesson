@@ -12,9 +12,10 @@ import {
 import { getImg, messageList } from '../../helper'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { chatSelector } from '../../selectors/chat'
 
 export default function Message() {
-    const chats = useSelector((state) => state.chats)
+    const chats = useSelector(chatSelector)
     const { chatId } = useParams()
 
     return (

@@ -3,10 +3,11 @@ import Message from '../Message/Message'
 import ChatNav from '../ChatNav/ChatNav'
 import Sender from '../Sender/Sender'
 import { useSelector } from 'react-redux'
+import { chatSelector } from '../../selectors/chat'
 import { useParams, useHistory } from 'react-router-dom'
 
 export default function Chat() {
-    const chats = useSelector((state) => state.chats)
+    const chats = useSelector(chatSelector)
     const history = useHistory()
     const { chatId } = useParams()
     const chatFilter = () => {
