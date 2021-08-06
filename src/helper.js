@@ -6,7 +6,8 @@ import { regExEmail, regExDB } from './data/data'
 
 export const chatPath = (arg) => arg.pathname.split('/chats/').pop()
 export const isRobotChat = (arg) => chatPath(arg) === 'Robot'
-export const validateEmail = (val) => !regExEmail.test(String(val).toLowerCase())
+export const validateEmail = (val) =>
+    !regExEmail.test(String(val).toLowerCase())
 export const validateBD = (val) => {
     console.log(val)
     console.log(!regExDB.test(String(val).toLowerCase()))
@@ -43,19 +44,5 @@ export const currTime = (currDate) =>
     ('0' + currDate.getHours()).slice(-2) +
     ':' +
     ('0' + currDate.getMinutes()).slice(-2)
-export const chatsMapper = (chats, arg, text, author) =>
-    chats.map((el) => {
-        if (chatPath(arg) === el.name)
-            el.messages = [
-                ...el.messages,
-                {
-                    id: el.messages.length + 1,
-                    text,
-                    author,
-                    time: currTime(new Date()),
-                },
-            ]
-        return el
-    })
 export const messageList = (chats, id) =>
     chats.find((el) => el.name === id).messages

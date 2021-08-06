@@ -13,9 +13,8 @@ import {
 import AddIcon from '@material-ui/icons/Add'
 import React from 'react'
 import { useHistory } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { changeChatObject } from '../../actions/chat'
-import { chatSelector } from '../../selectors/chat'
+import { useDispatch } from 'react-redux'
+import { addChat } from '../../actions/chat'
 import { validateEmail } from '../../helper'
 
 export default function AddChatBtn() {
@@ -26,7 +25,6 @@ export default function AddChatBtn() {
     const ref = React.useRef(null)
     const dispatch = useDispatch()
     const history = useHistory()
-    const chats = useSelector(chatSelector)
 
     const handleName = (e) => setName(e.target.value)
     const handleEmail = (e) => {
@@ -48,20 +46,10 @@ export default function AddChatBtn() {
     const handleAddChat = React.useCallback(() => {
         if (validationEmail < 1 && !name.length < 1) {
             handleClose()
-            dispatch(
-                changeChatObject([
-                    ...chats,
-                    {
-                        id: new Date().getTime(),
-                        name: name,
-                        email: email,
-                        messages: [],
-                    },
-                ])
-            )
+            dispatch(addChat(name, email))
             history.push('/chats/' + name)
         }
-    }, [chats, dispatch, email, history, name, validationEmail])
+    }, [dispatch, email, history, name, validationEmail])
 
     return (
         <>

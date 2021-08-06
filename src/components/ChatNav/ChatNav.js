@@ -20,7 +20,7 @@ import DeleteIcon from '@material-ui/icons/Delete'
 import { getImg, chatPath, textForDelChat } from '../../helper'
 import { useLocation, useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { changeChatObject } from '../../actions/chat'
+import { deleteChat } from '../../actions/chat'
 import { chatSelector } from '../../selectors/chat'
 
 export default function ChatNav() {
@@ -44,10 +44,8 @@ export default function ChatNav() {
     const handleCloseWithDel = () => {
         setOpen(false)
         if (curChatIdForDel) {
-            dispatch(
-                changeChatObject(chats.filter((el) => el.id !== curChatIdForDel))
-            )
-            history.push('/chats/' + chats[0].name)
+            dispatch(deleteChat(curChatIdForDel))
+            // history.push('/chats/' + chats[0].name)
         }
     }
 

@@ -1,16 +1,14 @@
 import './Sender.css'
 import React from 'react'
 import { useLocation } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import Loader from '../Loader/Loader'
-import { changeChatObject } from '../../actions/chat'
-import { chatsMapper, isRobotChat } from '../../helper'
+import { addMessage } from '../../actions/chat'
+import { chatPath, isRobotChat } from '../../helper'
 import { IconButton, InputBase, Paper } from '@material-ui/core'
 import SendIcon from '@material-ui/icons/Send'
-import { chatSelector } from '../../selectors/chat'
 
 export default function Sender() {
-    const chats = useSelector(chatSelector)
     const [input, setInput] = React.useState('')
     const [robotTyping, setRobotTyping] = React.useState(false)
     const location = useLocation()
@@ -24,25 +22,12 @@ export default function Sender() {
                 !robotTyping &&
                 (e.key === 'Enter' || e.key === undefined)
             ) {
-                dispatch(
-                    changeChatObject(chatsMapper(chats, location, input, 'Me'))
-                )
-
+                dispatch(addMessage(chatPath(location), input))
                 setInput('')
 
                 if (isRobotChat(location)) {
                     setRobotTyping(true)
                     const timer = setTimeout(() => {
-                        dispatch(
-                            changeChatObject(
-                                chatsMapper(
-                                    chats,
-                                    location,
-                                    'Ожидайте ответа оператора',
-                                    'Robot'
-                                )
-                            )
-                        )
                         setRobotTyping(false)
                         ref.current.focus()
                     }, 3000)
@@ -53,7 +38,7 @@ export default function Sender() {
                 }
             }
         },
-        [chats, dispatch, input, location, robotTyping]
+        [dispatch, input, location, robotTyping]
     )
 
     React.useEffect(() => ref.current.focus(), [])
