@@ -23,15 +23,19 @@ import { useDispatch, useSelector } from 'react-redux'
 import { deleteChat } from '../../actions/chat'
 import { chatSelector } from '../../selectors/chat'
 
-export default function ChatNav() {
+export default function ChatNav(props) {
     const [open, setOpen] = useState(false)
     const [curChatIdForDel, setCurChatIdForDel] = useState(null)
     const dispatch = useDispatch()
     const chats = useSelector(chatSelector)
     const location = useLocation()
     const history = useHistory()
+    const ref = props.senderRef
 
-    const handleClick = (name) => history.push('/chats/' + name)
+    const handleClick = (name) => {
+        history.push('/chats/' + name)
+        if (ref.current) ref.current.focus()
+    }
     const handleSelect = (name) => name === chatPath(location)
     const handleClose = () => {
         setOpen(false)
@@ -45,7 +49,6 @@ export default function ChatNav() {
         setOpen(false)
         if (curChatIdForDel) {
             dispatch(deleteChat(curChatIdForDel))
-            // history.push('/chats/' + chats[0].name)
         }
     }
 
