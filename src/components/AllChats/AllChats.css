@@ -1,11 +1,3 @@
-.AllChats {
-    text-align: center;
-    background-color: #282c34;
-    justify-content: center;
-    display: flex;
-    min-height: 100vh;
-}
-
 .AllChats__content {
     display: flex;
     flex-direction: column;

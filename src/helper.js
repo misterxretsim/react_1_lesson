@@ -9,10 +9,6 @@ export const isRobotChat = (arg) => chatPath(arg) === 'Robot'
 export const validateEmail = (val) =>
     !regExEmail.test(String(val).toLowerCase())
 export const validateBD = (val) => {
-    console.log(val)
-    console.log(!regExDB.test(String(val).toLowerCase()))
-    console.log(val.length)
-    console.log(!regExDB.test(String(val).toLowerCase()) && val.length === 10)
     if (val.length === 10) {
         return !regExDB.test(String(val).toLowerCase())
     } else {

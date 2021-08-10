@@ -14,6 +14,8 @@ import {
     PersonOutlineOutlined,
     Sms,
     SmsOutlined,
+    LocalHospital,
+    LocalHospitalOutlined,
 } from '@material-ui/icons'
 
 export default function Navigator() {
@@ -66,6 +68,21 @@ export default function Navigator() {
                         )}
                     </ListItemIcon>
                     <ListItemText primary="Чаты" />
+                </ListItem>
+                <ListItem
+                    button
+                    component={Link}
+                    to="/covid"
+                    selected={location.pathname.includes('/covid')}
+                >
+                    <ListItemIcon>
+                        {location.pathname.includes('/covid') ? (
+                            <LocalHospital className="Icon__colored" />
+                        ) : (
+                            <LocalHospitalOutlined />
+                        )}
+                    </ListItemIcon>
+                    <ListItemText primary="Корона" />
                 </ListItem>
             </List>
         </Paper>

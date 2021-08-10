@@ -9,7 +9,7 @@ import {
     Avatar,
     Divider,
 } from '@material-ui/core'
-import { getImg } from '../../helper'
+import { getImg, messageList } from '../../helper'
 import { useParams } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { chatSelector } from '../../selectors/chat'
@@ -21,9 +21,7 @@ export default function Message() {
     return (
         <Paper className="Message" elevation={0}>
             <List>
-                {chats
-                    .find((el) => el.name === chatId)
-                    .messages.map((msg, i) => (
+                {messageList(chats, chatId).map((msg, i) => (
                         <React.Fragment key={msg.id}>
                             {msg.author !== 'Me' ? (
                                 <ListItem>
@@ -51,8 +49,7 @@ export default function Message() {
                                     </ListItemAvatar>
                                 </ListItem>
                             )}
-                            {chats.find((el) => el.name === chatId).messages
-                                .length -
+                            {messageList(chats, chatId).length -
                                 1 !==
                             i ? (
                                 <Divider component="li" />

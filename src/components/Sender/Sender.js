@@ -8,12 +8,12 @@ import { chatPath, isRobotChat } from '../../helper'
 import { IconButton, InputBase, Paper } from '@material-ui/core'
 import SendIcon from '@material-ui/icons/Send'
 
-export default function Sender() {
+export default function Sender(props) {
     const [input, setInput] = React.useState('')
     const [robotTyping, setRobotTyping] = React.useState(false)
     const location = useLocation()
     const dispatch = useDispatch()
-    const ref = React.useRef(null)
+    const ref = props.senderRef
     const handleInput = (e) => setInput(e.target.value)
     const handleSend = React.useCallback(
         (e) => {
@@ -24,6 +24,7 @@ export default function Sender() {
             ) {
                 dispatch(addMessage(chatPath(location), input))
                 setInput('')
+                ref.current.focus()
 
                 if (isRobotChat(location)) {
                     setRobotTyping(true)
@@ -38,10 +39,10 @@ export default function Sender() {
                 }
             }
         },
-        [dispatch, input, location, robotTyping]
+        [dispatch, input, location, ref, robotTyping]
     )
 
-    React.useEffect(() => ref.current.focus(), [])
+    React.useEffect(() => ref.current.focus(), [ref])
 
     return (
         <>

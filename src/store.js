@@ -4,6 +4,7 @@ import { persistReducer, persistStore } from 'redux-persist'
 import storage from 'redux-persist/lib/storage'
 import profileReducer from './reducers/profile'
 import chatReducer from './reducers/chat'
+import covidReducer from './reducers/covid'
 
 
 const persistConfig = {
@@ -16,6 +17,7 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose
 const rootReducer = combineReducers({
     profile: profileReducer,
     chats: chatReducer,
+    covid: covidReducer,
 })
 
 const persistedReducer = persistReducer(persistConfig, rootReducer)
