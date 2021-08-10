@@ -21,12 +21,13 @@ import { getImg, chatPath, textForDelChat } from '../../helper'
 import { useLocation, useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { changeChatObject } from '../../actions/chat'
+import { chatSelector } from '../../selectors/chat'
 
 export default function ChatNav() {
     const [open, setOpen] = useState(false)
     const [curChatIdForDel, setCurChatIdForDel] = useState(null)
     const dispatch = useDispatch()
-    const chats = useSelector((state) => state.chats)
+    const chats = useSelector(chatSelector)
     const location = useLocation()
     const history = useHistory()
 

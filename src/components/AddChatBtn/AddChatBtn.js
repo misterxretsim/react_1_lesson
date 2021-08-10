@@ -15,7 +15,8 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { changeChatObject } from '../../actions/chat'
-import { reg } from '../../data/data'
+import { chatSelector } from '../../selectors/chat'
+import { validateEmail } from '../../helper'
 
 export default function AddChatBtn() {
     const [openAddDialog, setOpenAddDialog] = React.useState(false)
@@ -25,13 +26,12 @@ export default function AddChatBtn() {
     const ref = React.useRef(null)
     const dispatch = useDispatch()
     const history = useHistory()
-    const chats = useSelector((state) => state.chats)
+    const chats = useSelector(chatSelector)
 
     const handleName = (e) => setName(e.target.value)
     const handleEmail = (e) => {
         setEmail(e.target.value)
-        setValidationEmail(!reg.test(String(e.target.value).toLowerCase()))
-
+        setValidationEmail(validateEmail(e.target.value))
     }
     const handleClose = () => setOpenAddDialog(false)
     const handleOpen = () => {

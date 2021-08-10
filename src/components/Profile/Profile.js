@@ -1,5 +1,5 @@
 import './Profile.css'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import {
     Paper,
     FormControl,
@@ -13,15 +13,26 @@ import {
     RadioGroup,
     FormControlLabel,
     Radio,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
+    DialogActions,
 } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux'
 import { changeProfileObject } from '../../actions/profile'
 import { Edit, Save } from '@material-ui/icons'
+import { profileSelector } from '../../selectors/profile'
+import { validateEmail, validateBD, isExist } from '../../helper'
 
 export default function Profile() {
-    const { name, email, pass, gender, birthdate } = useSelector(
-        (state) => state.profile
-    )
+    const { name, email, pass, gender, birthdate } =
+        useSelector(profileSelector)
+    const [open, setOpen] = React.useState(false)
+    const [validationName, setValidationName] = React.useState(false)
+    const [validationEmail, setValidationEmail] = React.useState(false)
+    const [validationPass, setValidationPass] = React.useState(false)
+    const [validationBD, setValidationBD] = React.useState(false)
     const dispatch = useDispatch()
     const [profile, setProfile] = useState({
         name,
@@ -32,25 +43,53 @@ export default function Profile() {
     })
     const [isEdit, setIsEdit] = useState(false)
 
-    const handleName = (e) => setProfileObj({ name: e.target.value })
-    const handleEmail = (e) => setProfileObj({ email: e.target.value })
-    const handlePass = (e) => setProfileObj({ pass: e.target.value })
+    const handleName = (e) => {
+        setValidationName(!e.target.value.length)
+        setProfileObj({ name: e.target.value })
+    }
+    const handleEmail = (e) => {
+        setValidationEmail(validateEmail(e.target.value))
+        setProfileObj({ email: e.target.value })
+    }
+    const handlePass = (e) => {
+        setValidationPass(e.target.value.length < 8)
+        setProfileObj({ pass: e.target.value })
+    }
     const handleGender = (e) => setProfileObj({ gender: e.target.value })
-    const handleBirthdate = (e) => setProfileObj({ birthdate: e.target.value })
+    const handleBirthdate = (e) => {
+        setValidationBD(validateBD(e.target.value))
+        setProfileObj({ birthdate: e.target.value })
+    }
 
-    const setProfileObj = (obj) =>
+    const setProfileObj = (obj) => {
         setProfile({
-            name: obj.name ? obj.name : profile.name,
-            email: obj.email ? obj.email : profile.email,
-            pass: obj.pass ? obj.pass : profile.pass,
-            gender: obj.gender ? obj.gender : profile.gender,
-            birthdate: obj.birthdate ? obj.birthdate : profile.birthdate,
+            name: isExist(obj.name) ? obj.name : profile.name,
+            email: isExist(obj.email) ? obj.email : profile.email,
+            pass: isExist(obj.pass) ? obj.pass : profile.pass,
+            gender: isExist(obj.gender) ? obj.gender : profile.gender,
+            birthdate: isExist(obj.birthdate)
+                ? obj.birthdate
+                : profile.birthdate,
         })
+    }
 
     const handleClick = () => {
-        if (isEdit) dispatch(changeProfileObject(profile))
-        setIsEdit(!isEdit)
+        if (isEdit)
+            if (
+                !(
+                    validationName ||
+                    validationEmail ||
+                    validationPass ||
+                    validationBD
+                )
+            ) {
+                dispatch(changeProfileObject(profile))
+                setIsEdit(!isEdit)
+            } else setOpen(true)
+        else setIsEdit(!isEdit)
     }
+    const handleClose = () => setOpen(false)
+
     return (
         <Paper className="Profile" elevation={0} component="form">
             <Typography variant="h4" component="h1" className="Profile__header">
@@ -112,6 +151,7 @@ export default function Profile() {
                 <InputLabel htmlFor="date-input">Дата рождения</InputLabel>
                 <OutlinedInput
                     id="date-input"
+                    error={validationBD}
                     disabled={!isEdit}
                     autoComplete="off"
                     value={profile.birthdate}
@@ -131,6 +171,7 @@ export default function Profile() {
                 <InputLabel htmlFor="name-input">Имя</InputLabel>
                 <OutlinedInput
                     id="name-input"
+                    error={validationName}
                     disabled={!isEdit}
                     autoComplete="off"
                     value={profile.name}
@@ -149,6 +190,7 @@ export default function Profile() {
                 <InputLabel htmlFor="email-input">Email</InputLabel>
                 <OutlinedInput
                     id="email-input"
+                    error={validationEmail}
                     disabled={!isEdit}
                     autoComplete="off"
                     value={profile.email}
@@ -167,6 +209,7 @@ export default function Profile() {
                 <InputLabel htmlFor="pass-input">Пароль</InputLabel>
                 <OutlinedInput
                     id="pass-input"
+                    error={validationPass}
                     disabled={!isEdit}
                     type="password"
                     autoComplete="off"
@@ -178,6 +221,21 @@ export default function Profile() {
                     labelWidth={60}
                 />
             </FormControl>
+
+            <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>Ошибка</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Вы ввели некорректные данные. Проверьте заполненные поля
+                        и попробуйте снова.
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} color="primary">
+                        Понятно
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Paper>
     )
 }
